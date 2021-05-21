@@ -20,14 +20,21 @@ const jsonRefIdData = {
 
 export async function responseProvider (request) {
   
-  let pmuserVar = request.getVariable('PMUSER_GRN');
-  logger.log("PMUSER_GRN = %s", pmuserVar);
+  let akamiRefId = request.getVariable('PMUSER_GRN');
+  logger.log("PMUSER_GRN = %s", akamiRefId);
+
+  let akamaiRefIdHead = akamiRefId.split(/\./)[0];
+  logger.log(akamaiRefIdHead);
+
+  for (key in jsonRefIdData) {
+    logger.log(key)
+  }
 
   // Get text to be searched for and new replacement text from Property Manager variables in the request object.
   const tosearchfor = "</body>";
 
   // Text for the replacement
-  const toreplacewith = "\t" + `<data class="json-data" value='` + pmuserVar + jsonRefIdData + "'></data>\n</body>";
+  const toreplacewith = "\t" + `<data class="json-data" value='` + akamiRefId + jsonRefIdData + "'></data>\n</body>";
 
   // Set to 0 to replace all, otherwise a number larger than 0 to limit replacements
   const howManyReplacements = 1;
