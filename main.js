@@ -27,6 +27,7 @@ export async function responseProvider (request) {
   let akamaiRefIdHead = akamaiRefId.split(/\./)[0];
   logger.log(akamaiRefIdHead);
 
+  let key = "";
   for (key in jsonRefIdData) {
     if(akamaiRefIdHead === key) {
       logger.log(jsonRefIdData[key]);
