@@ -24,6 +24,9 @@ export async function responseProvider (request) {
   let akamaiRefId = request.getVariable('PMUSER_GRN');
   logger.log("PMUSER_GRN = %s", akamaiRefId);
 
+  let akamaiOriginalRefId = request.getVariable('PMUSER_ORIGINAL_GRN');
+  logger.log("PMUSER_GRN = %s", akamaiOriginalRefId);
+
   let akamaiRefIdHead = akamaiRefId.split(/\./)[0];
   logger.log(akamaiRefIdHead);
 
@@ -44,11 +47,11 @@ export async function responseProvider (request) {
   // Set to 0 to replace all, otherwise a number larger than 0 to limit replacements
   const howManyReplacements = 1;
   
-  logger.log(request.scheme);
+  logger.log(request.host);
   logger.log(request.host);
   logger.log(request.url);
 
-  return httpRequest(request).then(response => {
+  return httpRequest(`${request.scheme}://${request.host}${request.url}`).then(response => {
     return createResponse(
       response.status,
       response.headers,
