@@ -25,7 +25,7 @@ export async function responseProvider (request) {
   logger.log("PMUSER_GRN = %s", akamaiRefId);
 
   let akamaiOriginalRefId = request.getVariable('PMUSER_ORIGINAL_GRN');
-  logger.log("PMUSER_GRN = %s", akamaiOriginalRefId);
+  logger.log("PMUSER_ORIGINAL_GRN = %s", akamaiOriginalRefId);
 
   let akamaiRefIdHead = akamaiRefId.split(/\./)[0];
   logger.log(akamaiRefIdHead);
@@ -34,15 +34,16 @@ export async function responseProvider (request) {
   for (key in jsonRefIdData) {
     if(akamaiRefIdHead === key) {
       logger.log(jsonRefIdData[key]);
+      errorKey = jsonRefIdData[key];
       break;
     }    
   }
 
   // Get text to be searched for and new replacement text from Property Manager variables in the request object.
-  const tosearchfor = "</body>";
+  const tosearchfor = "Debugging Information";
 
   // Text for the replacement
-  const toreplacewith = "\t" + `<data class="json-data" value='` + akamaiRefId + jsonRefIdData + "'></data>\n</body>";
+  const toreplacewith = akamaiRefId + errorKey;
 
   // Set to 0 to replace all, otherwise a number larger than 0 to limit replacements
   const howManyReplacements = 1;
