@@ -43,8 +43,12 @@ export async function responseProvider (request) {
 
   // Set to 0 to replace all, otherwise a number larger than 0 to limit replacements
   const howManyReplacements = 1;
+  
+  logger.log(request.scheme);
+  logger.log(request.host);
+  logger.log(request.url);
 
-  return httpRequest(htmlEndPoint).then(response => {
+  return httpRequest(request).then(response => {
     return createResponse(
       response.status,
       response.headers,
