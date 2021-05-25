@@ -10,7 +10,7 @@ import { TextEncoderStream, TextDecoderStream } from 'text-encode-transform';
 import { FindAndReplaceStream } from 'find-replace-stream.js';
 import { logger } from 'log';
 
-const htmlEndPoint = '/json-inline-demo/index.html';
+const htmlEndPoint = '/failaction/maintenance.html';
 const jsonRefIdData = {
                       "0":"ERR_NONE",
                       "18":"ERR_ACCESS_DENIED",
@@ -47,11 +47,11 @@ export async function responseProvider (request) {
   // Set to 0 to replace all, otherwise a number larger than 0 to limit replacements
   const howManyReplacements = 1;
   
-  logger.log(request.host);
+  logger.log(request.scheme);
   logger.log(request.host);
   logger.log(request.url);
 
-  return httpRequest(`${request.scheme}://${request.host}${request.url}`).then(response => {
+  return httpRequest(htmlEndPoint).then(response => {
     return createResponse(
       response.status,
       response.headers,
