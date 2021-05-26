@@ -60,7 +60,7 @@ export async function responseProvider (request) {
   }
 
   return httpRequest(htmlEndPoint).then(response => {
-    let finalResponse = response;
+    let finalResponse = response.body; 
 
     return createResponse(
       response.status,
