@@ -53,13 +53,6 @@ export async function responseProvider (request) {
   logger.log(request.host);
   logger.log(request.url);
 
-  if(akamaiRefIdHead == "0") {
-    htmlEndpoint = '/failaction/maintenance.html';
-  } else {
-    htmlEndpoint = '/failaction/maintenance.html';
-  }
-
-
   return httpRequest(htmlEndPoint).then(response => {
     return createResponse(
       response.status,
