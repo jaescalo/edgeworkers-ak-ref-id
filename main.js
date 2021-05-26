@@ -31,36 +31,48 @@ export async function responseProvider (request) {
   let akamaiRefIdHead = akamaiRefId.split(/\./)[0];
   logger.log(akamaiRefIdHead);
 
-  if(akamaiRefIdHead != "0") {
-    let key = "";
-    for (key in jsonRefIdData) {
-      if(akamaiRefIdHead === key) {
-        logger.log(jsonRefIdData[key]);
-        errorKey = jsonRefIdData[key];
-        break;
-      }    
+  let key = "";
+  for (key in jsonRefIdData) {
+    if(akamaiRefIdHead === key) {
+      logger.log(jsonRefIdData[key]);
+      errorKey = jsonRefIdData[key];
+      break;
+    }    
+  }
+
+  // Get text to be searched for and new replacement text from Property Manager variables in the request object.
+  const tosearchfor = "Debugging Information";
+
+  // Text for the replacement
+  const toreplacewith = akamaiRefId + errorKey;
+
+  // Set to 0 to replace all, otherwise a number larger than 0 to limit replacements
+  const howManyReplacements = 1;
+  
+  logger.log(request.scheme);
+  logger.log(request.host);
+  logger.log(request.url);
+
+  if(akamaiRefIdHead == "0") {
+    htmlEndpoint = '/failaction/maintenance.html';
+  } else {
+    htmlEndpoint = '/failaction/maintenance.html';
+  }
+
+
+  return httpRequest(htmlEndPoint).then(response => {
+    let finalResponse = response;
+
+    if (akamaiRefIdHead != "0") {
+      let finalResponse = response.body.pipeThrough(new TextDecoderStream()).pipeThrough(new FindAndReplaceStream(tosearchfor, toreplacewith, howManyReplacements)).pipeThrough(new TextEncoderStream())
     }
 
-    // Get text to be searched for and new replacement text from Property Manager variables in the request object.
-    const tosearchfor = "Debugging Information";
+    return createResponse(
+      response.status,
+      response.headers,
+      finalResponse
+    );
+  });
 
-    // Text for the replacement
-    const toreplacewith = akamaiRefId + errorKey;
-
-    // Set to 0 to replace all, otherwise a number larger than 0 to limit replacements
-    const howManyReplacements = 1;
-    
-    logger.log(request.scheme);
-    logger.log(request.host);
-    logger.log(request.url);
-  
-    return httpRequest(htmlEndPoint).then(response => {
-      return createResponse(
-        response.status,
-        response.headers,
-        response.body.pipeThrough(new TextDecoderStream()).pipeThrough(new FindAndReplaceStream(tosearchfor, toreplacewith, howManyReplacements)).pipeThrough(new TextEncoderStream())
-      );
-    });
-  }
 }
 
