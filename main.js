@@ -55,7 +55,7 @@ export async function responseProvider (request) {
 
   return httpRequest(htmlEndPoint).then(response => {
     
-    finalResponse = response.body.pipeThrough(new TextDecoderStream()).pipeThrough(new FindAndReplaceStream(tosearchfor, toreplacewith, howManyReplacements)).pipeThrough(new TextEncoderStream());
+    let finalResponse = response.body.pipeThrough(new TextDecoderStream()).pipeThrough(new FindAndReplaceStream(tosearchfor, toreplacewith, howManyReplacements)).pipeThrough(new TextEncoderStream());
 
     return createResponse(
       response.status,
