@@ -14,7 +14,7 @@ jobs:
     docker:
       - image: akamai/edgeworkers
     environment:
-      EWVERSION: 2.07
+      EWVERSION: 2.08
       EWID: 4885
       BUNDLENAME: ak-ref-id.tgz
       DESCRIPTION: "Add Akamai Reference Number to Maintenance Page"
@@ -59,7 +59,8 @@ jobs:
       - run:
           name: "Enable Enhanced Debugging Token"
           command: |
-            akamai ew --edgerc /root/edgeworkers/.edgerc --accountkey $ACCOUNTKEY auth --expiry 60 --acl /json-inline-demo --network staging $HOSTNAME || true 
+            akamai ew --edgerc /root/edgeworkers/.edgerc --accountkey $ACCOUNTKEY auth --expiry 60 --acl / --network staging $HOSTNAME || true 
+            akamai ew --edgerc /root/edgeworkers/.edgerc --accountkey $ACCOUNTKEY auth --expiry 60 --acl /failaction/maintenance.html --network staging $HOSTNAME || true 
 
 workflows:
   build_and_deploy:

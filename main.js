@@ -18,6 +18,7 @@ const jsonRefIdData = {
                       "52":"ERR_INVALID_CLIENT_CERT",
                       "97":"ERR_CONNECT_TIMEOUT",
                       };
+let errorKey = "";
 
 export async function responseProvider (request) {
   
