@@ -59,13 +59,12 @@ export async function responseProvider (request) {
     htmlEndpoint = '/failaction/maintenance.html';
   }
 
-  return httpRequest(htmlEndPoint).then(response => {
-    let finalResponse = response.body.pipeThrough(new TextDecoderStream()).pipeThrough(new FindAndReplaceStream(tosearchfor, toreplacewith, howManyReplacements)).pipeThrough(new TextEncoderStream())
 
+  return httpRequest(htmlEndPoint).then(response => {
     return createResponse(
       response.status,
       response.headers,
-      finalResponse
+      response.body.pipeThrough(new TextDecoderStream()).pipeThrough(new FindAndReplaceStream(tosearchfor, toreplacewith, howManyReplacements)).pipeThrough(new TextEncoderStream())
     );
   });
 
