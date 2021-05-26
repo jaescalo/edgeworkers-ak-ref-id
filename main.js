@@ -54,10 +54,13 @@ export async function responseProvider (request) {
   logger.log(request.url);
 
   return httpRequest(htmlEndPoint).then(response => {
+    
+    finalResponse = response.body.pipeThrough(new TextDecoderStream()).pipeThrough(new FindAndReplaceStream(tosearchfor, toreplacewith, howManyReplacements)).pipeThrough(new TextEncoderStream());
+
     return createResponse(
       response.status,
       response.headers,
-      response.body.pipeThrough(new TextDecoderStream()).pipeThrough(new FindAndReplaceStream(tosearchfor, toreplacewith, howManyReplacements)).pipeThrough(new TextEncoderStream())
+      finalResponse
     );
   });
 
