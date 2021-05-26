@@ -10,7 +10,7 @@ import { TextEncoderStream, TextDecoderStream } from 'text-encode-transform';
 import { FindAndReplaceStream } from 'find-replace-stream.js';
 import { logger } from 'log';
 
-const htmlEndPoint = '/failaction/maintenance.html';
+const htmlEndPoint = "/failaction/maintenance.html";
 const jsonRefIdData = {
                       "0":"ERR_NONE",
                       "18":"ERR_ACCESS_DENIED",
@@ -18,7 +18,7 @@ const jsonRefIdData = {
                       "52":"ERR_INVALID_CLIENT_CERT",
                       "97":"ERR_CONNECT_TIMEOUT",
                       };
-let errorKey = "";
+let errorKey = "NONE";
 
 export async function responseProvider (request) {
   
@@ -40,6 +40,13 @@ export async function responseProvider (request) {
     }    
   }
 
+  if (akamaiRefIdHead === "0") {
+    htmlEndPoint = "/ak-ref-id";
+    logger.log("Key is ZERO")
+  } else {
+    console.log("Key is not ZERO")
+  }
+
   // Get text to be searched for and new replacement text from Property Manager variables in the request object.
   const tosearchfor = "Debugging Information";
 
@@ -57,6 +64,9 @@ export async function responseProvider (request) {
     
     let finalResponse = response.body;
 
+    if (akamaiRefIdHead !== "0") {
+      finalResponse = response.body.pipeThrough(new TextDecoderStream()).pipeThrough(new FindAndReplaceStream(tosearchfor, toreplacewith, howManyReplacements)).pipeThrough(new TextEncoderStream());
+    }
     return createResponse(
       response.status,
       response.headers,
