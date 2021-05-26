@@ -10,7 +10,6 @@ import { TextEncoderStream, TextDecoderStream } from 'text-encode-transform';
 import { FindAndReplaceStream } from 'find-replace-stream.js';
 import { logger } from 'log';
 
-const htmlEndPoint = "/failaction/maintenance.html";
 const jsonRefIdData = {
                       "0":"ERR_NONE",
                       "18":"ERR_ACCESS_DENIED",
@@ -18,6 +17,7 @@ const jsonRefIdData = {
                       "52":"ERR_INVALID_CLIENT_CERT",
                       "97":"ERR_CONNECT_TIMEOUT",
                       };
+let htmlEndPoint = "/failaction/maintenance.html";
 let errorKey = "NONE";
 
 export async function responseProvider (request) {
