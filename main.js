@@ -10,8 +10,6 @@ import { TextEncoderStream, TextDecoderStream } from 'text-encode-transform';
 import { FindAndReplaceStream } from 'find-replace-stream.js';
 import { logger } from 'log';
 
-const htmlEndPoint = '/failaction/maintenance.html';
-
 // Instantiate with JSON.parse is much faster than literal object
 const jsonRefIdData = JSON.parse('{\
                       "0":"ERR_NONE",\
@@ -24,12 +22,6 @@ const jsonRefIdData = JSON.parse('{\
 let errorKey = "";
 
 export async function responseProvider (request) {
-  
-  let akamaiRefId = request.getVariable('PMUSER_GRN');
-  logger.log("PMUSER_GRN = %s", akamaiRefId);
-
-  let akamaiOriginalRefId = request.getVariable('PMUSER_ORIGINAL_GRN');
-  logger.log("PMUSER_ORIGINAL_GRN = %s", akamaiOriginalRefId);
 
   let akamaiReferenceError = request.getVariable('PMUSER_REFERENCE_ERROR');
   logger.log("PMUSER_REFERENCE_ERROR = %s", akamaiReferenceError);
@@ -47,7 +39,7 @@ export async function responseProvider (request) {
   }
 
   // Get text to be searched for and new replacement text from Property Manager variables in the request object.
-  const tosearchfor = "Debugging Information";
+  const tosearchfor = "inconvenience";
 
   // Text for the replacement
   const toreplacewith = akamaiReferenceError + " " + errorKey;
@@ -59,7 +51,7 @@ export async function responseProvider (request) {
   logger.log(request.host);
   logger.log(request.url);
 
-  return httpRequest(htmlEndPoint).then(response => {
+  return httpRequest(`${request.scheme}://${request.host}${request.url}`).then(response => {
     return createResponse(
       response.status,
       response.headers,
