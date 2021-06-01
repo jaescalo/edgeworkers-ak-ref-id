@@ -11,13 +11,16 @@ import { FindAndReplaceStream } from 'find-replace-stream.js';
 import { logger } from 'log';
 
 const htmlEndPoint = '/failaction/maintenance.html';
-const jsonRefIdData = {
-                      "0":"ERR_NONE",
-                      "18":"ERR_ACCESS_DENIED",
-                      "21":"ERR_EDGEWORKER",
-                      "52":"ERR_INVALID_CLIENT_CERT",
-                      "97":"ERR_CONNECT_TIMEOUT",
-                      };
+
+// Instantiate with JSON.parse is much faster than literal object
+const jsonRefIdData = JSON.parse('{\
+                      "0":"ERR_NONE",\
+                      "6":"ERR_CONNECT_FAIL",\
+                      "18":"ERR_ACCESS_DENIED",\
+                      "21":"ERR_EDGEWORKER",\
+                      "52":"ERR_INVALID_CLIENT_CERT",\
+                      "97":"ERR_CONNECT_TIMEOUT"\
+                      }');
 let errorKey = "";
 
 export async function responseProvider (request) {
@@ -47,7 +50,7 @@ export async function responseProvider (request) {
   const tosearchfor = "Debugging Information";
 
   // Text for the replacement
-  const toreplacewith = akamaiRefId + " " + errorKey;
+  const toreplacewith = akamaiReferenceError + " " + errorKey;
 
   // Set to 0 to replace all, otherwise a number larger than 0 to limit replacements
   const howManyReplacements = 1;
